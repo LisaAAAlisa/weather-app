@@ -7,7 +7,12 @@ $("#input-city").on("keyup", function (event) {
         document.getElementById("btn-search").click();
     }
 });
-
+//THE EVENT LISTENER THAT DOESN'T WORK!!
+// var cityList = document.getElementById("list-group-item");
+// cityList.addEventListener('click', function (event) {
+//     event.preventDefault();
+//        console.log(event);
+// });
 
 $("#btn-search").on("click", function (event) {
     // Preventing the button from trying to submit the form
@@ -15,6 +20,8 @@ $("#btn-search").on("click", function (event) {
     // Storing the input city
     var inputCity = $("#input-city").val().trim();
     //setting up the request api with parameters and key
+
+    
     var query1day = "http://api.openweathermap.org/data/2.5/weather?q=" + inputCity + "&appid=53e2dc180d74909b3053da110929b86a&units=imperial";
     //setting the latitude and longitude values to 0 
     var currentLat = 0;
@@ -91,22 +98,6 @@ $("#btn-search").on("click", function (event) {
         day3hum.textContent = " Humidity: " + cityWeather.daily[2].humidity.toFixed(1) + " %";
         day4hum.textContent = " Humidity: " + cityWeather.daily[3].humidity.toFixed(1) + " %";
         day5hum.textContent = " Humidity: " + cityWeather.daily[4].humidity.toFixed(1) + " %";
-
-        // day2hum
- 
-        // day3hum
-        // day4hum
-        // day5hum
-        // var tom= cityWeather.daily[1].dt;
-        // var tempDate = new Date(tom*1000);
-        // var day2= cityWeather.daily[2].dt;
-        // var tempDate2 = new Date(day2*1000);
-        // var day3= cityWeather.daily[3].dt;
-        // var tempDate3 = new Date(day3*1000);
-        // var day4= cityWeather.daily[4].dt;
-        // var tempDate4 = new Date(day4*1000);
-        // var day5= cityWeather.daily[5].dt;
-        // var tempDate5 = new Date(day5*1000);
     });
 });
 
