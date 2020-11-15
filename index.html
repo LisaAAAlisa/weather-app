@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Dashboard</title>
+    <!-- Bootstrap CSS CDN  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
+
+    <!-- Font Awesome CSS Icons (For cool glyphicons) -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+
+    <!-- Style to fix the issue of text extending past card length -->
+    <style>
+        input[type=text] {
+            border-radius: 3px;
+            margin-top: 5px;
+            float: left;
+            border: 1px solid grey;
+            background: #f1f1f1;
+        }
+        button {
+            border-radius: 3px;
+            margin-top: 5px;
+            background: #2196F3;
+            color: white;
+            border: 1px solid grey;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0b7dda;
+        }
+
+        .forecast {
+            background: #add8e6;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Jumbotron for Title -->
+        <div class="row" style="background-color: #20315A">
+            <div class="col-sm-12">
+                <div class="page-header" style="color: white">
+                    <h1 class="text-center">
+                        <strong>
+                            <i class="fa fa-sun-o"></i> Weather Dashboard
+                        </strong>
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3" style="background-color: gainsboro;">
+                <input type="text" placeholder="Enter city..." id="input-city">
+                <button id="btn-search" type="submit"><i class="fa fa-search"></i></button><br /><br />
+                <div class="card">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Houston</li>
+                        <li class="list-group-item">Austin</li>
+                        <li class="list-group-item">Chicago</li>
+                        <li class="list-group-item">New York</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="card" style="margin-top:10px">
+                    <h2 id="currentCity">City</h2>
+                    <span id="currentTemp">Temperature:</span>
+                    <span id="currentHumidity">Humidity:</span>
+                    <span id="currentWindSpeed">Wind Speed:</span>
+                    <span id="currentUVIndex">UV Index:</span>
+                </div>
+                <h2 style="margin-top:10px">5-Day Forecast:</h2>
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="card forecast">
+                            Today
+                            <span id="todayTemp">Temperature:</span>
+                            <span id="todayHumidity">Humidity:</span>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card forecast">
+                            Today+1
+                            <span id="todayPlusOneTemp">Temperature:</span>
+                            <span id="todayPlusOneHumidity">Humidity:</span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm">
+                        <div class="card forecast">
+                            Today+2
+                            <span id="todayPlusTwoTemp">Temperature:</span>
+                            <span id="todayPlusTwoHumidity">Humidity:</span>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card forecast">
+                            Today+3
+                            <span id="todayPlusThreeTemp">Temperature:</span>
+                            <span id="todayPlusThreeHumidity">Humidity:</span>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card forecast">
+                            Today+4
+                            <span id="todayPlusFourTemp">Temperature:</span>
+                            <span id="todayPlusFourHumidity">Humidity:</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- jQuery JS -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Code to the JavaScript File -->
+    <script src="script.js"></script>
+
+</body>
+</html>
