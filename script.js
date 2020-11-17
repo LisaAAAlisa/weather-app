@@ -1,4 +1,4 @@
-// 
+// this function is for the search button
 $("#input-city").on("keyup", function (event) {
     if (event.keyCode === 13) {
         event.preventDefault();
@@ -14,6 +14,7 @@ $("#input-city").on("keyup", function (event) {
 //     frm.reset();  // Reset
 //     return false; // Prevent page refresh
 // }
+//this function stores city input and generates weather 
 $("#city-list").on("click", function (event) {
     event.preventDefault();
     var city = event.target.innerHTML;
@@ -24,11 +25,12 @@ $("#city-list").on("click", function (event) {
 $("#btn-search").on("click", function (event) {
     // Preventing the button from trying to submit the form
     event.preventDefault();
-
+//all user input to lowercase
     var inputCity = $("#input-city").val().trim().toLowerCase();
-
+//validating city input
     if (inputCity === "") {
         alert("Must enter city!");
+        //storing input in local storage
     } else {
 
         var cityList = localStorage.getItem("cityList");
@@ -88,7 +90,7 @@ $("#btn-search").on("click", function (event) {
 
 });
 
-
+//function for date
 function formatDate(millis) {
     var now = new Date(millis);
     var day = ("0" + now.getDate()).slice(-2);
@@ -96,7 +98,7 @@ function formatDate(millis) {
     var formattedDate = (month) + "/" + (day) + "/" + now.getFullYear();
     return (formattedDate);
 }
-
+//function to get data for current city
 function getCityWeather(inputCity) {
     //setting up the request API with parameters and key
     var query1day = "http://api.openweathermap.org/data/2.5/weather?q=" + inputCity + "&appid=f4905c76bda3444b817ac1595d84c3fc&units=imperial";
