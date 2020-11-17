@@ -5,6 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Weather Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- Bootstrap CSS CDN  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
 
@@ -55,16 +57,14 @@
                 </div>
             </div>
         </div>
+        <!-- search input field and result output -->
         <div class="row">
             <div class="col-sm-3" style="background-color: gainsboro;">
                 <input type="text" placeholder="Enter city..." id="input-city">
                 <button id="btn-search" type="submit"><i class="fa fa-search"></i></button><br /><br />
                 <div class="card">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Houston</li>
-                        <li class="list-group-item">Austin</li>
-                        <li class="list-group-item">Chicago</li>
-                        <li class="list-group-item">New York</li>
+                    <ul id="city-list" class="list-group list-group-flush">
+                        
                     </ul>
                 </div>
             </div>
@@ -74,46 +74,11 @@
                     <span id="currentTemp">Temperature:</span>
                     <span id="currentHumidity">Humidity:</span>
                     <span id="currentWindSpeed">Wind Speed:</span>
-                    <span id="currentUVIndex">UV Index:</span>
+                    <span>UV Index: <span id="currentUVIndex"></span>
                 </div>
                 <h2 style="margin-top:10px">5-Day Forecast:</h2>
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="card forecast">
-                            Today
-                            <span id="todayTemp">Temperature:</span>
-                            <span id="todayHumidity">Humidity:</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="card forecast">
-                            Today+1
-                            <span id="todayPlusOneTemp">Temperature:</span>
-                            <span id="todayPlusOneHumidity">Humidity:</span>
-                        </div>
-                    </div>
-
-                    <div class="col-sm">
-                        <div class="card forecast">
-                            Today+2
-                            <span id="todayPlusTwoTemp">Temperature:</span>
-                            <span id="todayPlusTwoHumidity">Humidity:</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="card forecast">
-                            Today+3
-                            <span id="todayPlusThreeTemp">Temperature:</span>
-                            <span id="todayPlusThreeHumidity">Humidity:</span>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="card forecast">
-                            Today+4
-                            <span id="todayPlusFourTemp">Temperature:</span>
-                            <span id="todayPlusFourHumidity">Humidity:</span>
-                        </div>
-                    </div>
+                <div id = "forecast-cards" class="row">
+                    
                 </div>
             </div>
         </div>

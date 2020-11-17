@@ -1,28 +1,105 @@
-// api key 53e2dc180d74909b3053da110929b86a
-// api url api.openweathermap.org/data/2.5/weather?q={city name}&appid=53e2dc180d74909b3053da110929b86a;
-
+// 
 $("#input-city").on("keyup", function (event) {
     if (event.keyCode === 13) {
         event.preventDefault();
         document.getElementById("btn-search").click();
     }
 });
-//THE EVENT LISTENER THAT DOESN'T WORK!!
-// var cityList = document.getElementById("list-group-item");
-// cityList.addEventListener('click', function (event) {
-//     event.preventDefault();
-//        console.log(event);
-// });
+// trying to get the form to clear input after submitting
+// function submitForm() {
+//     // Get the first form with the name
+//     // Hopefully there is only one, but there are more, select the correct index
+//     var frm = document.getElementsByName("#input-city")[0];
+//     frm.submit(); // Submit
+//     frm.reset();  // Reset
+//     return false; // Prevent page refresh
+// }
+$("#city-list").on("click", function (event) {
+    event.preventDefault();
+    var city = event.target.innerHTML;
+    getCityWeather(city);
+
+});
 
 $("#btn-search").on("click", function (event) {
     // Preventing the button from trying to submit the form
     event.preventDefault();
-    // Storing the input city
-    var inputCity = $("#input-city").val().trim();
-    //setting up the request api with parameters and key
 
-    
-    var query1day = "http://api.openweathermap.org/data/2.5/weather?q=" + inputCity + "&appid=53e2dc180d74909b3053da110929b86a&units=imperial";
+    var inputCity = $("#input-city").val().trim().toLowerCase();
+
+    if (inputCity === "") {
+        alert("Must enter city!");
+    } else {
+
+        var cityList = localStorage.getItem("cityList");
+        var cities;
+
+        if (cityList != "") {
+            cities = JSON.parse(localStorage.getItem("cityList"));
+        }
+        console.log(cityList);
+
+        // Create an array to store cities in.
+        var citiesAry = [];
+        for (key in cities) {
+            citiesAry.push(cities[key]);
+        }
+        console.log(citiesAry);
+        // Remove the city in the array if it exists.
+        for (i = 0; i < citiesAry.length; i++) {
+            if (inputCity === citiesAry[i]) {
+                citiesAry.splice(i, 1);
+            }
+        }
+        console.log(citiesAry);
+        // Add the city to the beginning of the array.
+        citiesAry.unshift(inputCity);
+        console.log(citiesAry);
+        // <li class="list-group-item">Houston</li>
+
+        $("#city-list").empty();
+
+        // Gets around formatting issue. Without this it'll leave a white bar
+        // along the bottom of the search bar if there are no cities.
+        $("#city-section").attr("class", "card");
+
+        // Create a card item for each city via the DOM.
+        for (i = 0; i < citiesAry.length; i++) {
+
+            var $cityListItem = $("<li class='list-group-item'>");
+            $cityListItem.append(citiesAry[i]);
+
+            $("#city-list").append($cityListItem);
+        }
+
+        // Add each city in the array to a JSON object and then store it.
+        var citiesJson = {};
+
+        for (i = 0; i < citiesAry.length; i++) {
+            citiesJson[i] = citiesAry[i];
+        }
+
+        console.log(citiesJson);
+
+        localStorage.setItem("cityList", JSON.stringify(citiesJson));
+        // localStorage.setItem("cityList", "");  //-- ZERO OUT FOR THE LIST
+        getCityWeather(inputCity);
+    }
+
+});
+
+
+function formatDate(millis) {
+    var now = new Date(millis);
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var formattedDate = (month) + "/" + (day) + "/" + now.getFullYear();
+    return (formattedDate);
+}
+
+function getCityWeather(inputCity) {
+    //setting up the request API with parameters and key
+    var query1day = "http://api.openweathermap.org/data/2.5/weather?q=" + inputCity + "&appid=f4905c76bda3444b817ac1595d84c3fc&units=imperial";
     //setting the latitude and longitude values to 0 
     var currentLat = 0;
     var currentLon = 0;
@@ -32,73 +109,125 @@ $("#btn-search").on("click", function (event) {
     var currentHum = document.getElementById("currentHumidity");
     var currentWind = document.getElementById("currentWindSpeed");
     var currentUV = document.getElementById("currentUVIndex");
-    var day1temp = document.getElementById("todayTemp");
-    var day2temp = document.getElementById("todayPlusOneTemp");
-    var day3temp = document.getElementById("todayPlusTwoTemp")
-    var day4temp = document.getElementById("todayPlusThreeTemp");
-    var day5temp = document.getElementById("todayPlusFourTemp");
-    var day1hum = document.getElementById("todayHumidity");
-    var day2hum = document.getElementById("todayPlusOneHumidity");
-    var day3hum = document.getElementById("todayPlusTwoHumidity");
-    var day4hum = document.getElementById("todayPlusThreeHumidity");
-    var day5hum = document.getElementById("todayPlusFourHumidity");
-
 
     //setting the ajax request to get the data from api
     $.ajax({
         url: query1day,
         method: "GET"
+
     }).then(function (response) {
 
         //setting up the date to display next to city name
         console.log(response);
         var cityWeather = response;
+
         var now = new Date();
         var day = ("0" + now.getDate()).slice(-2);
         var month = ("0" + (now.getMonth() + 1)).slice(-2);
         var today = (month) + "/" + (day) + "/" + now.getFullYear();
-        currentCity.textContent = cityWeather.name + " (" + today + ")";
-        // var weather = cityWeather.weather[0].main;
-        // if (weather === "clouds") {
-        //     <i class="fas fa-cloud"></i>
-        // }
+        console.log(cityWeather);
+        var weather = cityWeather.weather[0].main;
+        var weatherIcon;
+
+        if (weather === "Clear") {
+            weatherIcon = "<span class='fa fa-sun-o'></span></i> ";
+        }
+        if (weather === "Clouds") {
+            weatherIcon = "<span class='fa fa-cloud'></span>";
+        }
+        if (weather === "Rain") {
+            weatherIcon = "<span class='fa fa-bolt'></span>";
+        }
+        currentCity.innerHTML = cityWeather.name + " (" + today + ")" + weatherIcon;
+
         // setting up the lat and long to be used in the api request below
         currentLat = cityWeather.coord.lat;
         currentLon = cityWeather.coord.lon;
-    });
-    //api request to pull data based on lat and long
-    var query5day = "https://api.openweathermap.org/data/2.5/onecall?lat=" + currentLat + "&lon=" + currentLon + "&units=imperial&exclude=hourly,minutely,alerts&appid=53e2dc180d74909b3053da110929b86a";
-    //ajax request to the api
-    $.ajax({
-        url: query5day,
-        method: "GET"
-        //function to get response and logging the output into html
-    }).then(function (response) {
-        var cityWeather = response;
-        currentTemp.textContent = "Temperature: " + cityWeather.current.temp.toFixed(1) + " \xB0F";
-        currentHum.textContent = "Humidity: " + cityWeather.current.humidity + "%";
-        currentWind.textContent = "Wind Speed: " + cityWeather.current.wind_speed.toFixed(1) + " mph";
-        currentUV.textContent = "UV Index: " + cityWeather.current.uvi.toFixed(1);
-        console.log(cityWeather.daily[0].dt);
-        for (i = 0; i <= 5; i++) {
-            tempsForDates = cityWeather.daily[i].dt;
-            var tempDate = new Date(tempsForDates * 1000);
-            console.log(tempDate);
-            var day = ("0" + tempDate.getDate()).slice(-2);
-            var month = ("0" + (tempDate.getMonth() + 1)).slice(-2);
-            var tempsForDates = (month) + "/" + (day) + "/" + tempDate.getFullYear();
+        console.log(currentLat);
+        console.log(currentLon);
+        //api request to pull data based on lat and long
+        var query5day = "https://api.openweathermap.org/data/2.5/onecall?lat=" + currentLat + "&lon=" + currentLon + "&units=imperial&exclude=hourly,minutely,alerts&appid=f4905c76bda3444b817ac1595d84c3fc";
+        //ajax request to the api
+        $.ajax({
+            url: query5day,
+            method: "GET"
+
+            //function to get response and logging the output into html
+        }).then(function (response) {
+            var cityWeather = response;
+            currentTemp.textContent = "Temperature: " + cityWeather.current.temp.toFixed(1) + " \xB0F";
+            currentHum.textContent = "Humidity: " + cityWeather.current.humidity + "%";
+            currentWind.textContent = "Wind Speed: " + cityWeather.current.wind_speed.toFixed(1) + " mph";
+            // currentUV.textContent = "UV Index: " + cityWeather.current.uvi.toFixed(1);
+            var uvIndex = cityWeather.current.uvi.toFixed(1);
+            currentUV.innerHTML = "&nbsp" + uvIndex + "&nbsp";
+            if (uvIndex < 3) { currentUV.style.backgroundColor = "#98f58e"; }
+            if (uvIndex >= 2 && uvIndex < 6) { currentUV.style.backgroundColor = "#ffc56e"; }
+            if (uvIndex >= 6) {
+                currentUV.style.backgroundColor = "#ff4942";
+                currentUV.style.color = "white";
+            }
+
+            $("#forecast-cards").empty();
+
+
+            //for loop to poutput dates in the 5-day forecast starting with "tomorrow"
+            for (i = 1; i < 6; i++) {
+                var $forecastCol = $("<div class='col-sm'>");
+                var $forecastCard = $("<div class='card forecast'>");
+                $forecastCard.append("<span><strong>" + formatDate(cityWeather.daily[i].dt * 1000) + "</strong></span>");
+                $forecastCard.append("<span><strong>Temp:</strong> " + cityWeather.daily[i].temp.day.toFixed(1) + " \xB0F</span");
+                $forecastCard.append("<span><strong>Humidity:</strong> " + cityWeather.daily[i].humidity.toFixed(0) + " %</span>");
+                $forecastCol.append($forecastCard);
+                $("#forecast-cards").append($forecastCol);
+            }
+        }); // ajax2
+    }); // ajax1
+}; // getCityWeather
+
+$(function () {
+
+    var cityList = localStorage.getItem("cityList");
+    var cities;
+
+    console.log(cityList);
+
+    if (cityList != "") {
+        cities = JSON.parse(localStorage.getItem("cityList"));
+
+        // Create an array to store cities in.
+        var citiesAry = [];
+        for (key in cities) {
+            citiesAry.push(cities[key]);
         }
-        day1temp.textContent = "Temperature: " + cityWeather.daily[0].temp.day.toFixed(1) + " \xB0F"; 
-        day2temp.textContent = "Temperature: " + cityWeather.daily[1].temp.day.toFixed(1) + " \xB0F"; 
-        day3temp.textContent = "Temperature: " + cityWeather.daily[2].temp.day.toFixed(1) + " \xB0F"; 
-        day4temp.textContent = "Temperature: " + cityWeather.daily[3].temp.day.toFixed(1) + " \xB0F"; 
-        day5temp.textContent = "Temperature: " + cityWeather.daily[4].temp.day.toFixed(1) + " \xB0F"; 
-        day1hum.textContent = " Humidity: " + cityWeather.daily[0].humidity.toFixed(1) + " %";
-        day2hum.textContent = " Humidity: " + cityWeather.daily[1].humidity.toFixed(1) + " %";
-        day3hum.textContent = " Humidity: " + cityWeather.daily[2].humidity.toFixed(1) + " %";
-        day4hum.textContent = " Humidity: " + cityWeather.daily[3].humidity.toFixed(1) + " %";
-        day5hum.textContent = " Humidity: " + cityWeather.daily[4].humidity.toFixed(1) + " %";
-    });
+        // <li class="list-group-item">Houston</li>
+        $("#city-list").empty();
+
+        // Gets around formatting issue. Without this it'll leave a white bar
+        // along the bottom of the search bar if there are no cities.
+        $("#city-section").attr("class", "card");
+
+        // Create a card item for each city via the DOM.
+        for (i = 0; i < citiesAry.length; i++) {
+
+            var $cityListItem = $("<li class='list-group-item'>");
+            $cityListItem.append(citiesAry[i]);
+
+            $("#city-list").append($cityListItem);
+        }
+
+        // Add each city in the array to a JSON object and then store it.
+        var citiesJson = {};
+
+        for (i = 0; i < citiesAry.length; i++) {
+            citiesJson[i] = citiesAry[i];
+        }
+
+        getCityWeather(citiesAry[0]);
+        console.log(citiesAry[0]);
+    }
+
 });
+
 
 
