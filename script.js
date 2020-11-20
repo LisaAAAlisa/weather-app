@@ -6,9 +6,7 @@ $("#input-city").on("keyup", function (event) {
     }
 });
 // trying to get the form to clear input after submitting
-// function submitForm() {
-//     // Get the first form with the name
-//     // Hopefully there is only one, but there are more, select the correct index
+//      function submitForm() {
 //     var frm = document.getElementsByName("#input-city")[0];
 //     frm.submit(); // Submit
 //     frm.reset();  // Reset
