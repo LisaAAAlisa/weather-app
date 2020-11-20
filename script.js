@@ -99,7 +99,7 @@ function formatDate(millis) {
 //function to get data for current city
 function getCityWeather(inputCity) {
     //setting up the request API with parameters and key
-    var query1day = "http://api.openweathermap.org/data/2.5/weather?q=" + inputCity + "&appid=f4905c76bda3444b817ac1595d84c3fc&units=imperial";
+    var query1day = "https://api.openweathermap.org/data/2.5/weather?q=" + inputCity + "&appid=f4905c76bda3444b817ac1595d84c3fc&units=imperial";
     //setting the latitude and longitude values to 0 
     var currentLat = 0;
     var currentLon = 0;
